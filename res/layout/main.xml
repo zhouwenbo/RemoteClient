@@ -3,7 +3,7 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:background="#ffffff"
+
         >
 
     <Button
@@ -12,5 +12,25 @@
             android:layout_height="wrap_content"
             android:text="Bind Service"
             />
+
+
+    <Button
+            android:id="@+id/send_broadcast"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="send Broadcast看fragment中的Receiver是否能够收的到"/>
+
+    <Button
+            android:id="@+id/send_broadcast2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="send local Broadcast看fragment中的Receiver是否能够收的到"/>
+
+    <Button
+            android:id="@+id/startBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="启动Fragment中的Activity"/>
+
 </LinearLayout>
 

@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,7 +18,15 @@ public class IndexActivity extends Activity implements View.OnClickListener{
 
     private Button btn;
 
+    private Button btn1;
+
+    private Button btn2;
+
+    private Button btn3;
+
     private MyAIDLService myAIDLService;
+
+    private LocalBroadcastManager localBroadcastManager;
 
     private ServiceConnection connection = new ServiceConnection() {
 
@@ -44,8 +54,16 @@ public class IndexActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.main);
 
         btn = (Button)findViewById(R.id.bind_service);
+        btn1 = (Button)findViewById(R.id.send_broadcast);
+        btn2 = (Button)findViewById(R.id.send_broadcast2);
+        btn3 = (Button)findViewById(R.id.startBtn);
 
         btn.setOnClickListener(this);
+        btn1.setOnClickListener(this);
+        btn2.setOnClickListener(this);
+        btn3.setOnClickListener(this);
+
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
     }
 
     @Override
@@ -55,7 +73,26 @@ public class IndexActivity extends Activity implements View.OnClickListener{
                 Intent intent = new Intent("com.fheebiy.service.MyRemoteService");
                 bindService(intent, connection, BIND_AUTO_CREATE);
                 break;
+            case R.id.send_broadcast:   //能收到
+                Intent intent1 = new Intent("com.fheebiy.receiver.msg.coming");
+                intent1.putExtra("msg","msg comes from RemoteClient");
+                sendBroadcast(intent1);
+                break;
+
+            case R.id.send_broadcast2:  //收不到(只有本应用程序内的BroadcastReceiver能收到)
+                Intent intent2 = new Intent("com.fheebiy.receiver.msg.coming");
+                intent2.putExtra("msg","msg comes from RemoteClient");
+                localBroadcastManager.sendBroadcast(intent2);
+                break;
+            case R.id.startBtn:         //调用Fragment中的CombinationViewActivity(跨进程通信之---Activity)
+                Intent intent3 = new Intent();
+                intent3.setAction("com.fheebiy.activity.CombinationViewActivity");
+                intent3.setData(Uri.parse("info://调用其他应用程序的Activity"));
+                intent3.putExtra("msg","msg come from remote client");
+                startActivity(intent3);
+                break;
             default:
+
 
 
         }
